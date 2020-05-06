@@ -66,7 +66,15 @@ class VideoIndexer{
                 videoUrl: params.video_url
             }
         }
-        return await axios(config)
+        
+            let response = await axios(config)
+            if(response.status==200)
+            {
+                return response.data.id;
+            }
+            throw new Error(response.data)
+        
+        
     }
 
     // Get Video index
@@ -95,14 +103,16 @@ class VideoIndexer{
             }
         }
         const response= await axios(config)
-        const data=response.data
+        if(response.status==200){
+            const data=response.data
         // check status if get_info called immediately after uploading
         if(data.state=="Processing"){
             console.log("Video under processing...")
             console.log("Progress : ",data.videos[0].processingProgress)
         }
-        return response;
-        
+        return response.data;
+        }
+        throw new Error(response.data)
 }
 
     // Get Captions from Videos
@@ -155,17 +165,6 @@ class VideoIndexer{
         return await axios(config)
     }
 }
-
-
-let vi=new VideoIndexer("e71fb83590ea4fe3bbe069a1a7faaada","9ddc8b28-5fa9-4421-8261-1503f0ee3d24","trial")
-vi.get_video_index({videoId:"8494eae701"}).then(res=>{
-    console.log(res.data)
-})
-.catch(err=>{
-    console.log(err)
-})
-
-
 
 
 
