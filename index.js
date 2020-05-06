@@ -42,6 +42,7 @@ class VideoIndexer{
         }
     }
 
+    // Uploadin the Video
     upload_video_to_indexer=async(params)=>{
         const token_wait=await this.check_access_token()
         if(!params.video_name){
