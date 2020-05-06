@@ -66,22 +66,43 @@ class VideoIndexer{
                 videoUrl: params.video_url
             }
         }
-        try{
-            const response= await axios(config)
-            const video_id=response.data.id
-            return video_id
-        }
-        catch(err){
-            
-            if(err.response!==undefined){
-                return err.response.data
-            }
-            else{
-                return err;
-            }
-        }
-    
+        return await axios(config)
     }
 
+    // Get Video index
+    get_index_result=async(params)=>{
+    
+        const token_wait=await this.check_access_token();
+        // Checking the video id is provided or not
+        if(params===undefined || params.videoId===undefined){
+            console.log("Video id is required...")
+        }
+
+        // Setting default language to english
+        if(!params.language){
+            params.language="English"
+        }
+        
+        const {videoId}=params
+        
+        const url=`https://api.videoindexer.ai/${this.location}/Accounts/${this.account_id}/Videos/${videoId}/Index`
+
+        // Configurations
+        const config={
+            url:url,
+            method:"GET",
+            headers:{
+                "Ocp-Apim-Subscription-Key":this.subscription_key
+            },
+            params:{
+                ...params,
+                accessToken: this.access_token,
+            }
+        }
+        return await axios(config)
 }
+}
+
+
+
 
