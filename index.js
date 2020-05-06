@@ -120,7 +120,31 @@ class VideoIndexer{
                 accessToken:this.access_token
             }
         }
+        return await axios(config)
+    }
 
+
+     // Get Thubnails from Videos
+     get_video_thumbnails=async(params)=>{
+        await this.check_access_token()
+
+    
+        if(params.format===undefined){
+            params.format="jpeg"
+        }
+        const url=`https://api.videoindexer.ai/${this.location}/Accounts/${this.account_id}/Videos/${params.videoId}/Thumbnails/${params.thumbnailId}`
+        // Configuration
+        const config={
+            url:url,
+            method:"GET",
+            headers:{
+                "Ocp-Apim-Subscription-Key":this.subscription_key
+            },
+            params:{
+                ...params,
+                accessToken:this.access_token
+            }
+        }
         return await axios(config)
     }
 }
