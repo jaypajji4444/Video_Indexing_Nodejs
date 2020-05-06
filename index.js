@@ -70,23 +70,18 @@ class VideoIndexer{
     }
 
     // Get Video index
-    get_index_result=async(params)=>{
-    
+    get_video_index=async(params)=>{
         const token_wait=await this.check_access_token();
         // Checking the video id is provided or not
         if(params===undefined || params.videoId===undefined){
             console.log("Video id is required...")
         }
-
         // Setting default language to english
         if(!params.language){
             params.language="English"
         }
         
-        const {videoId}=params
-        
-        const url=`https://api.videoindexer.ai/${this.location}/Accounts/${this.account_id}/Videos/${videoId}/Index`
-
+        const url=`https://api.videoindexer.ai/${this.location}/Accounts/${this.account_id}/Videos/${params.videoId}/Index`
         // Configurations
         const config={
             url:url,
@@ -101,7 +96,35 @@ class VideoIndexer{
         }
         return await axios(config)
 }
+
+    // Get Captions from Videos
+    get_video_caption=async(params)=>{
+        await this.check_access_token()
+
+        if(params.language===undefined){
+            params.language="English"
+        }
+        if(params.format===undefined){
+            params.format="vtt"
+        }
+        const url=`https://api.videoindexer.ai/${this.location}/Accounts/${this.account_id}/Videos/${params.videoId}/Captions`
+        // Configuration
+        const config={
+            url:url,
+            method:"GET",
+            headers:{
+                "Ocp-Apim-Subscription-Key":this.subscription_key
+            },
+            params:{
+                ...params,
+                accessToken:this.access_token
+            }
+        }
+
+        return await axios(config)
+    }
 }
+
 
 
 
