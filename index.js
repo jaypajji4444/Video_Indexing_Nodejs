@@ -71,7 +71,7 @@ class VideoIndexer{
 
     // Get Video index
     get_video_index=async(params)=>{
-        const token_wait=await this.check_access_token();
+        await this.check_access_token();
         // Checking the video id is provided or not
         if(params===undefined || params.videoId===undefined){
             console.log("Video id is required...")
@@ -94,13 +94,20 @@ class VideoIndexer{
                 accessToken: this.access_token,
             }
         }
-        return await axios(config)
+        const response= await axios(config)
+        const data=response.data
+        // check status if get_info called immediately after uploading
+        if(data.state=="Processing"){
+            console.log("Video under processing...")
+            console.log("Progress : ",data.videos[0].processingProgress)
+        }
+        return response;
+        
 }
 
     // Get Captions from Videos
     get_video_caption=async(params)=>{
         await this.check_access_token()
-
         if(params.language===undefined){
             params.language="English"
         }
@@ -125,13 +132,13 @@ class VideoIndexer{
 
 
      // Get Thubnails from Videos
-     get_video_thumbnails=async(params)=>{
+    get_video_thumbnails=async(params)=>{
         await this.check_access_token()
 
-    
         if(params.format===undefined){
             params.format="jpeg"
         }
+
         const url=`https://api.videoindexer.ai/${this.location}/Accounts/${this.account_id}/Videos/${params.videoId}/Thumbnails/${params.thumbnailId}`
         // Configuration
         const config={
@@ -148,6 +155,15 @@ class VideoIndexer{
         return await axios(config)
     }
 }
+
+
+let vi=new VideoIndexer("e71fb83590ea4fe3bbe069a1a7faaada","9ddc8b28-5fa9-4421-8261-1503f0ee3d24","trial")
+vi.get_video_index({videoId:"8494eae701"}).then(res=>{
+    console.log(res.data)
+})
+.catch(err=>{
+    console.log(err)
+})
 
 
 
