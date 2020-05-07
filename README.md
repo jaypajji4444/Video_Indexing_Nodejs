@@ -10,6 +10,7 @@ Nodejs wrapper for Microsaft Azure's Video Indexer API
 - Captions from videos
 - Thumbnails of videos in "JPEG" or "Base64" .
 - Error handling.
+<<<<<<< HEAD
 
 ## Loading and configuring the module
 
@@ -44,3 +45,5 @@ Only HTTPS Video URL is supported (HTML or any other types are not supported)
 
 
  
+=======
+>>>>>>> 71d3c762b80df0e08eb2e57a498190e4a16f4392
