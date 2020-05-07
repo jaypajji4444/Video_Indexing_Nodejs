@@ -137,7 +137,12 @@ class VideoIndexer{
                 accessToken:this.access_token
             }
         }
-        return await axios(config)
+        const response= await axios(config)
+        if(response.status==200){
+            return response.data 
+        }
+        // Error 
+        throw new Error(response.data)
     }
 
 
@@ -162,7 +167,14 @@ class VideoIndexer{
                 accessToken:this.access_token
             }
         }
-        return await axios(config)
+
+        const response=await axios(config)
+        
+        if(response.status==200){
+            return response.data
+        }
+        // Error
+        throw new Error(response.data)
     }
 }
 
