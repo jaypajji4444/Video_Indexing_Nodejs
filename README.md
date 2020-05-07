@@ -1,7 +1,7 @@
-# Video_Indexing_Nodejs
+# Video_Indexing_Nodejs 
 Nodejs wrapper for Microsaft Azure's Video Indexer API
-
-
+ 
+(More Functionality To Be Added Soon)
 ## Features
 
 - Upload Videos though URL to Microsoft's Video Indexer API.
