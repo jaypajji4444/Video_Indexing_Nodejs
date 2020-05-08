@@ -1,7 +1,7 @@
 # Video_Indexing_Nodejs 
-Nodejs wrapper for Microsaft Azure's Video Indexer API
+### Nodejs wrapper for Microsaft Azure's Video Indexer API
  
-(More Functionality To Be Added Soon)
+
 ## Features
 
 - Upload Videos though URL to Microsoft's Video Indexer API.
@@ -10,15 +10,16 @@ Nodejs wrapper for Microsaft Azure's Video Indexer API
 - Captions from videos
 - Thumbnails of videos in "JPEG" or "Base64" .
 - Error handling.
+#### (More Functionality To Be Added Soon-under development)
 
 ## Loading and configuring the module
 
 ```js
 // CommonJS
-const VideoIndexer = require('node-video-indexer');
+const VideoIndexer = require('./Video_indexer/index');
 
 // ES Module
-import VideoIndexer from 'node-video-indexer';
+import VideoIndexer from './Video_indexer/index';
 ```
 ## Prerequisite
 Before Starting to use need you will need to get and store the belowe mentioned stuffs:
@@ -46,11 +47,11 @@ Only HTTPS Video URL is supported (HTML or any other types are not supported)
 // Uploading video
 vi.upload_video_to_indexer({
     videoUrl:"Url(https) of the video to upload" // Compulsory,
-    language:"English or any other", // (Default:"English"),
-    name:"Name of the video (Unique Identifier)" // Optional
+    language:"English or any other", // Optional(Default:"English"),
+    name:"video-name" // Optional
 })
-.then(id=>{
-    console.log("Video Id:",id)
+.then(res=>{
+    console.log("Video Id:",res.videoId)
 })
 .catch(err=>{
     console.log(err.response.data)
@@ -67,12 +68,10 @@ vi.get_video_index({
 .then(data=>{
     console.log(data)
     // Processing Progress :
-    console.log(data.videos[0].processingProgress)
+    console.log(data.videos[0].processingProgress)// 80% ..100%
     })
     .catch(err=>{
-        if(err.response!==undefined)
             console.log(err.response.data)
-        else console.log(err)
     })
 ```
 ### Note :Insights won't be generated untill video is processed completely(In case uploading and getting index are called back to back).
@@ -84,13 +83,11 @@ vi.get_video_caption({
     format:"vtt or txt or csv or srt " // Default: vtt
     language: "English or any other", // Default : English
 })
-.then(data=>{
-    console.log(data)
+.then(res=>{
+    console.log(res.data)
 })
 .catch(err=>{
-    if(err.response!==undefined)
       console.log(err.response.data)
-    else console.log(err)
 })
 ```
 
@@ -100,12 +97,10 @@ vi.get_video_thumbnails({
     videoId:"Uploaded video's Id", // Required
     format:" jpeg || base64" // Default:jpeg
 })
-.then(data=>{
-    console.log(data)
+.then(res=>{
+    console.log(res.data)
 })
 .catch(err=>{
-    if(err.response!==undefined)
       console.log(err.response.data)
-    else console.log(err)
 })
 ```
