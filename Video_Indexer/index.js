@@ -1,6 +1,7 @@
 const axios=require("axios")
 const fs=require("fs")
-const fetch=require("node-fetch")
+const fetch=require("node-fetch");
+const { type } = require("os");
 
 class VideoIndexer{
     constructor(subscription_key,account_id,location=null){
@@ -139,7 +140,7 @@ class VideoIndexer{
         }
         const response= await axios(config)
         if(response.status==200){
-            return response.data 
+            return response 
         }
         // Error 
         throw new Error(response.data)
@@ -149,7 +150,6 @@ class VideoIndexer{
      // Get Thubnails from Videos
     get_video_thumbnails=async(params)=>{
         await this.check_access_token()
-
         if(params.format===undefined){
             params.format="jpeg"
         }
@@ -171,7 +171,7 @@ class VideoIndexer{
         const response=await axios(config)
         
         if(response.status==200){
-            return response.data
+            return response
         }
         // Error
         throw new Error(response.data)
@@ -179,13 +179,15 @@ class VideoIndexer{
 }
 
 // let vi=new VideoIndexer("e71fb83590ea4fe3bbe069a1a7faaada","9ddc8b28-5fa9-4421-8261-1503f0ee3d24","trial")
-// vi.upload_video_to_indexer({
-//     video_url:"https://www.radiantmediaplayer.com/media/bbb-360p.mp4",
+// vi.get_video_thumbnails({
+//     videoId:"8494eae701",
+//     thumbnailId:"21d79c37-1dc3-4634-888d-0bd047fb4626"
 // })
 // .then(res=>{
-//     console.log(res)
+//    console.log(typeof(res))
+//    console.log(res.status)
 // })
-// .catch(err=>{console.log(err)})
+// .catch(err=>{console.log(err.response.data)})
 
 
 
