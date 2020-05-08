@@ -1,7 +1,4 @@
 const axios=require("axios")
-const fs=require("fs")
-const fetch=require("node-fetch");
-const { type } = require("os");
 
 class VideoIndexer{
     constructor(subscription_key,account_id,location=null){
@@ -9,12 +6,13 @@ class VideoIndexer{
         this.account_id=account_id;
         this.location=location
         this.access_token=null
-        
     }
 
     // Accessing the token for API calls
     get_access_token=async()=>{
         const config={
+            method:"GET",
+            url:`https://api.videoindexer.ai/auth/${this.location}/Accounts/${this.account_id}/AccessToken`,
             params:{
                 "allowEdit":true
             },
@@ -22,22 +20,20 @@ class VideoIndexer{
                 "Ocp-Apim-Subscription-Key":this.subscription_key
             }
         }
-        try{
-            const url=`https://api.videoindexer.ai/auth/${this.location}/Accounts/${this.account_id}/AccessToken`
-            const res=await axios.get(url,config)
-            const access_token=res.data
-            this.access_token=access_token
-            return res
-            
+
+            const response=await axios(config)
+
+            if(response.status==200){
+                const access_token=response.data
+                this.access_token=access_token
+                return response
+            }
+            // Error Handlig
+            throw new Error(response.data)
         }
-        catch(err){
-            console.log(err)
-        }
-    }
 
     // Checking whether access token is saved or not
     check_access_token=async ()=>{
-    
         if(this.access_token==null){
             await this.get_access_token()
         }
@@ -68,7 +64,7 @@ class VideoIndexer{
             }
         }
         
-            let response = await axios(config)
+            const response = await axios(config)
             if(response.status==200)
             {
                 return {videoId:response.data.id};
@@ -178,16 +174,6 @@ class VideoIndexer{
     }
 }
 
-// let vi=new VideoIndexer("e71fb83590ea4fe3bbe069a1a7faaada","9ddc8b28-5fa9-4421-8261-1503f0ee3d24","trial")
-// vi.get_video_thumbnails({
-//     videoId:"8494eae701",
-//     thumbnailId:"21d79c37-1dc3-4634-888d-0bd047fb4626"
-// })
-// .then(res=>{
-//    console.log(typeof(res))
-//    console.log(res.status)
-// })
-// .catch(err=>{console.log(err.response.data)})
 
 
 
