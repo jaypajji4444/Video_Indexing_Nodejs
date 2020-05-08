@@ -178,5 +178,15 @@ class VideoIndexer{
     }
 }
 
+// let vi=new VideoIndexer("e71fb83590ea4fe3bbe069a1a7faaada","9ddc8b28-5fa9-4421-8261-1503f0ee3d24","trial")
+// vi.upload_video_to_indexer({
+//     video_url:"https://www.radiantmediaplayer.com/media/bbb-360p.mp4",
+// })
+// .then(res=>{
+//     console.log(res)
+// })
+// .catch(err=>{console.log(err)})
+
+
 
 module.exports=VideoIndexer
