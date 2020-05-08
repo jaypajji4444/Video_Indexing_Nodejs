@@ -26,7 +26,7 @@ class VideoIndexer{
             const res=await axios.get(url,config)
             const access_token=res.data
             this.access_token=access_token
-            return access_token
+            return res
             
         }
         catch(err){
@@ -70,7 +70,7 @@ class VideoIndexer{
             let response = await axios(config)
             if(response.status==200)
             {
-                return response.data.id;
+                return {videoId:response.data.id};
             }
             throw new Error(response.data)
         
@@ -179,4 +179,4 @@ class VideoIndexer{
 }
 
 
-
+module.exports=VideoIndexer
